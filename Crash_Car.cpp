@@ -14,7 +14,6 @@ using namespace std;
 #pragma comment(lib, "glut32.lib")
 
 
-
 void InitGraphics(int argc, char* argv[]);
 void SetTransformations();
 void Display();
@@ -23,9 +22,9 @@ float tile2_movement = -40;
 float tile3_movement = 80;
 float speed_move = 3.8;
 float speed_tiles = 2;
-float car1_movment = 300;
-float car2_movment = 700;
-float car3_movment = 600;
+//float car1_movment = 300;
+//float car2_movment = 700;
+//float car3_movment = 600;
 int score = 0;
 int t = 0;
 float intpart;
@@ -33,19 +32,47 @@ float scoref = 0;
 boolean crashed = false;
 boolean power_up_nottaken = true;
 int power_up_time = 0;
-//boolean gap=false;
+boolean start=true;
 char identity;
 cars car_m(0, -195, 0.7, 0, 0, 'm');
-cars car_o(0, car1_movment, 1, 0.5, 0, 'o');
-cars car_o1(40, car2_movment, 1, 0, 1, 'o');
-cars car_o2(-40, car3_movment, 0.36, 0.25, 0.14, 'o');
+cars car_o(0, 300, 1, 0.5, 0, 'o');
+cars car_o1(40, 700, 1, 0, 1, 'o');
+cars car_o2(-40, 600, 0.36, 0.25, 0.14, 'o');
 power_up invincible(0, 400);
 //power_up invincible= new invincible();
+
+int main(int argc, char* argv[]) {
+    InitGraphics(argc, argv);
+    srand(time(NULL));
+    return 0;
+}
+
 void timer(int value)
 {
     const int desiredFPS = 125;
     glutTimerFunc(1000 / desiredFPS, timer, ++value);
     glutPostRedisplay();
+}
+void restart() {
+    car_m.x = 0;
+    car_m.y = -195;
+    car_o.x = 0;
+    car_o.y = 300 ;
+    car_o1.x = 40;
+    car_o1.y = 700;
+    car_o2.x = -40;
+    car_o2.y = 600;
+    speed_tiles = 2;
+    car_o.speed = 2.3;
+    car_o1.speed = 2.3;
+    car_o2.speed = 2.3;
+    invincible.speed = 1;
+    invincible.y = 400;
+    score = 0;
+    crashed = false;
+
+    glutDisplayFunc(Display);
+
 }
 
 void OnKeyPress(unsigned char key, int x, int y) {
@@ -93,19 +120,22 @@ void OnKeyPress(unsigned char key, int x, int y) {
         }
         break;
 
+    case 'r':
+    case 'R':
+        if (crashed) {
+            restart();
+        }
     }
+   
+
 
 }
 
 
-int main(int argc, char* argv[]) {
-    InitGraphics(argc, argv);
-    srand(time(NULL));
-    return 0;
-}
+
 
 void power_up_check() {
-    if ((abs(car_m.x - invincible.x) < 15) & (abs(invincible.y + 100) < 15)) {
+    if ((abs(car_m.x - invincible.x) < 60) & (abs(car_m.y - invincible.y) < 70)) {
         invincible.draw = false;
         power_up_nottaken = false;
         invincible.y = 400;
@@ -142,24 +172,6 @@ void SetTransformations() {
     gluOrtho2D(-200, 200, -200, 200);
 }
 
-void crash_check() {
-
-    if (((abs(car_m.x - car_o.x) < 25) & (abs(car_o.y + 100) < 15) | //  main car 
-        (abs(car_m.x - car_o1.x) < 25) & (abs(car_o1.y + 100) < 15) |
-        (abs(car_m.x - car_o2.x) < 25) & (abs(car_o2.y + 100) < 15))) {// car 2
-
-
-
-        speed_tiles = 0;
-        car_o.speed = 0;
-        car_o1.speed = 0;
-        car_o2.speed = 0;
-        crashed = true;
-
-
-    }
-
-}
 
 void Drawscore(int score, float x, float y, float z)
 {
@@ -175,6 +187,38 @@ void Drawscore(int score, float x, float y, float z)
     }
 
 }
+
+void crash_check() {
+
+    if (((abs(car_m.x - car_o.x) < 25) & (abs(car_o.y + 100) < 15) | //  main car 
+        (abs(car_m.x - car_o1.x) < 25) & (abs(car_o1.y + 100) < 15) |
+        (abs(car_m.x - car_o2.x) < 25) & (abs(car_o2.y + 100) < 15))) {// car 2
+
+
+
+        speed_tiles = 0;
+        car_o.speed = 0;
+        car_o1.speed = 0;
+        car_o2.speed = 0;
+        invincible.speed = 0;
+        crashed = true;
+        if (crashed) {
+            glColor3f(0.6, 0, 0);
+            glRasterPos3f(-25, 0, 0);
+
+            string s = "GAME OVER";
+
+
+            for (int i = 0; i < s.length(); i++)
+            {
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s.at(i));
+            }
+        }
+    }
+
+}
+
+
 void draw_street() {
     glBegin(GL_QUADS);
     glColor4f(0.1, 0.1, 0.1, 0.60);
@@ -261,15 +305,17 @@ void draw_tiles() {
     glPopMatrix();
 }
 
+
 void Display() {
 
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
     draw_street();
     draw_tiles();
-    glPushMatrix();
     car_m.draw_car_m();
-    glPopMatrix();
+    car_o.draw_car_o();
+    car_o1.draw_car_o();
+    car_o2.draw_car_o();
 
     glPushMatrix();
     Drawscore(score, 150, -190, 0);
@@ -281,7 +327,7 @@ void Display() {
         }
 
     }
-    invincible.draw_power_up(score);
+    invincible.draw_power_up_invincible(score);
     power_up_check();
     if (power_up_nottaken) {
         crash_check();
@@ -289,11 +335,7 @@ void Display() {
 
 
 
-    car_o.draw_car_o();
-    car_o1.draw_car_o();
-    car_o2.draw_car_o();
-
-    glPopMatrix();
+   
     glFinish();
     glutSwapBuffers();
 }
