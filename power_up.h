@@ -19,6 +19,7 @@ public:
 	int x = 0, y = 400, z = 1;
 	boolean draw = false;
 	float speed = 1;
+	char identifier;
 	power_up(int x, int y) {
 		this->x = x;
 		this->y = y;
@@ -105,16 +106,6 @@ public:
 			glVertex2f(-10, -1);
 			glVertex2f(0, 5);
 			glEnd();
-			glBegin(GL_LINE_LOOP);
-			glColor3f(0, 0, 0);
-			glVertex2f(0, 5);
-			glVertex2f(10, -1);
-			glVertex2f(7, -15);
-			glVertex2f(0, -23);
-			glVertex2f(-7, -15);
-			glVertex2f(-10, -1);
-			glVertex2f(0, 5);
-			glEnd();
 			y -= 1;
 
 			if (y < -290)
@@ -146,6 +137,19 @@ public:
 
 
 	};
+	void draw_power_up_double_score(int score) {
+		if (score != 0) {
+			if (score % 30 == 0 | draw) {
+				draw = true;
+				struct_power_up_invincible();
+				if (!draw) {
+					z = 1;
+				}
+
+			}
+		}
+
+	}
 };
 
 
