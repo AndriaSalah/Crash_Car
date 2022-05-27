@@ -27,7 +27,7 @@ int score = 0;
 float intpart;
 float scoref = 0;
 float power_up_timerf = 0;
-int power_up_timer = 0;
+int power_up_timer = 10;
 boolean crashed = false;
 boolean power_up_nottaken = true;
 boolean untouchable=false;
@@ -72,6 +72,7 @@ void restart() {
     speed_move = 3.8;
     score = 0;
     crashed = false;
+    invincible.draw = false;
 
     glutDisplayFunc(Display);
 
@@ -151,6 +152,12 @@ void OnKeyPress(unsigned char key, int x, int y) {
         glutDestroyWindow(1);
         exit(0);
         break;
+
+    case 'm':
+    case 'M':    // Escape key
+        inmenu = true;
+        restart();
+        break;
     
     }
    
@@ -171,29 +178,7 @@ void power_up_check() {
         untouchable = true;
 
         //if (untouchable) {
-            glColor3f(1, 1, 1);
-            glRasterPos3f(150, -160, 0);
-
-            string s = "invincble";
-            for (int i = 0; i < s.length(); i++)
-            {
-                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s.at(i));
-            }
-            //glRasterPos3f(150, -170, 0);
-            //for (power_up_timerf = 10; power_up_timerf >= 0; power_up_timerf -= 0.01) {
-            //    if (modf(scoref, &intpart) < 0.01)
-            //    {
-            //        power_up_timer -= 1;
-
-            //        string number = to_string(score);
-
-            //        for (int i = 0; i < s.length(); i++)
-            //        {
-            //            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s.at(i));
-            //        }
-               // }
             
-        //}
     }
 
     
@@ -262,15 +247,40 @@ void crash_check() {
         invincible.speed = 0;
         crashed = true;
         if (crashed) {
-            glColor3f(0.6, 0, 0);
-            glRasterPos3f(-25, 0, 0);
-
-            string s = "GAME OVER";
-
+            glColor3f(0.3, 0.3, 0.3);
+            glBegin(GL_QUADS);
+            glVertex2f(-40,30);
+            glVertex2f(40, 30);
+            glVertex2f(40, -30);
+            glVertex2f(-40, -30);
+            glEnd(); 
+            
+            glColor3f(1, 1, 1);
+            glRasterPos3f(-28, 20, 0);
+            string s = "You crashed";
+            string s2 = "Esc to exit";
+            string s3 = "R to restart";
+            string s4 = "M for menu";
 
             for (int i = 0; i < s.length(); i++)
             {
-                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s.at(i));
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s.at(i));
+            }
+            glRasterPos3f(-28, 0, 0);
+            for (int i = 0; i < s2.length(); i++)
+            {
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s2.at(i));
+            } 
+
+            glRasterPos3f(-28, -10, 0);
+            for (int i = 0; i < s3.length(); i++)
+            {
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s3.at(i));
+            }
+            glRasterPos3f(-28, -20, 0);
+            for (int i = 0; i < s4.length(); i++)
+            {
+                glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s4.at(i));
             }
         }
     }
@@ -380,6 +390,30 @@ void game() {
         glVertex2d(15, -120);
         glEnd();
         glPopMatrix();
+        glColor3f(1, 1, 1);
+        glRasterPos3f(150, -160, 0);
+
+        string s = "invincble";
+        for (int i = 0; i < s.length(); i++)
+        {
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s.at(i));
+        }
+        //glRasterPos3f(150, -180, 0);
+        //for (power_up_timerf = 11; power_up_timerf > 0; power_up_timerf -= 0.01) {
+        //   cout << modf(power_up_timerf, &intpart);
+        //    if (modf(power_up_timerf, &intpart) < 0.001)
+        //    {
+        //        power_up_timer -= 1;
+        //        //cout << power_up_timer<<endl;
+        //    }
+        //}
+
+        //string number = to_string(power_up_timer);
+
+        //for (int i = 0; i < number.length(); i++)
+        //{
+        //    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, number.at(i));
+        //}
     }
     
     car_o.draw_car_o();
@@ -437,7 +471,7 @@ void menu() {
     glVertex2f(40, -100);
     glVertex2f(-40, -100);
     glEnd();
-    glColor3f(0.5, 0, 0);
+    glColor3f(1, 1, 1);
     glRasterPos3f(-20, 70, 0);
     string s1 = "Crash Car";
     string s2 = "* Press Enter to play";
