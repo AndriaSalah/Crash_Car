@@ -30,7 +30,7 @@ public:
         this->g = g;
         this->b = b;
         this->identifier = identifier;
-        srand(time(NULL));
+        srand(time(NULL)); 
     }
     void draw_car_m() {
 
@@ -573,11 +573,11 @@ public:
         {
             if (rand() % 2 == 0)
             {
-                x = -50;
+                x = -53;
             }
             else if (rand() % 3 == 0)
             {
-                x = 50;
+                x = 53;
             }
             else
             {
