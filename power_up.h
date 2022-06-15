@@ -16,9 +16,9 @@ class power_up
 {
 public:
 
-	int x = 0, y = 400, z = 1;
+	int x , y , z = 1;
 	boolean draw = false;
-	float speed = 1;
+	float speed = 2.8;
 	char identifier;
 	power_up(int x, int y) {
 		this->x = x;
@@ -78,7 +78,7 @@ public:
 
 	void draw_power_up_invincible(int score) {
 		if (score != 0) {
-		if (score % 20 == 0 | draw ) {
+		if (score % 35 == 0 | draw ) {
 			draw = true;
 			struct_power_up_invincible();
 			if (!draw) {
@@ -93,20 +93,25 @@ public:
 
 		if (draw) {
 			glPushMatrix();
+			glColor3f(1,1,1);
 			glTranslatef(x, y, 0);
-			glBegin(GL_POLYGON);
-			glColor3f(1, 0, 0);
-			glVertex2f(0, 5);
-			glVertex2f(10, -1);
-			glVertex2f(7, -15);
-			glColor3f(0, 1, 0);
-			glVertex2f(0, -23);
-			glVertex2f(-7, -15);
-			glColor3f(0, 0, 1);
-			glVertex2f(-10, -1);
-			glVertex2f(0, 5);
+			glLineWidth(4);
+			glBegin(GL_LINE_STRIP);
+			glVertex2f(-5, 10);
+			glVertex2f(0, 15);
+			glVertex2f(5, 5);
+			glVertex2f(-5, -5);
+			glVertex2f(5, -5);
 			glEnd();
-			y -= 1;
+			glBegin(GL_LINE_STRIP);
+			glVertex2f(5, 0);
+			glVertex2f(15, 15);
+			glEnd();
+			glBegin(GL_LINE_STRIP);
+			glVertex2f(15, 0);
+			glVertex2f(5, 15);
+			glEnd();
+			y -= speed;
 
 			if (y < -290)
 			{
@@ -139,9 +144,9 @@ public:
 	};
 	void draw_power_up_double_score(int score) {
 		if (score != 0) {
-			if (score % 30 == 0 | draw) {
+			if (score % 20 == 0 | draw) {
 				draw = true;
-				struct_power_up_invincible();
+				struct_power_up_double_score();
 				if (!draw) {
 					z = 1;
 				}

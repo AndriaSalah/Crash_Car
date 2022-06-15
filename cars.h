@@ -20,7 +20,7 @@ public:
     float g;
     float b;
     char identifier;
-    float speed = 2.3;
+    float speed = 4.5;
     int counter = rand() % 301 - 300;
 
     cars(float x, float y, float r, float g, float b, char identifier) {
