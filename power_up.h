@@ -78,7 +78,7 @@ public:
 
 	void draw_power_up_invincible(int score) {
 		if (score != 0) {
-		if (score % 25 == 0 | draw ) {
+		if (score % 15 == 0 | draw ) {
 			draw = true;
 			struct_power_up_invincible();
 			if (!draw) {
@@ -144,7 +144,7 @@ public:
 	};
 	void draw_power_up_double_score(int score) {
 		if (score != 0) {
-			if (score % 15 == 0 | draw) {
+			if (score % 25 == 0 | draw) {
 				draw = true;
 				struct_power_up_double_score();
 				if (!draw) {
