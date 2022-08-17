@@ -15,6 +15,9 @@ This is a simple game implemented with OpenGL. In the game, The scene contains a
 Keybord control :
 
 > W - UP
+> 
 > S - DOWN
+> 
 > A - LEFT
+> 
 > D - RIGHT
