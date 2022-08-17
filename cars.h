@@ -7,7 +7,7 @@
 #include<synchapi.h>
 #include<iostream>
 #include<sstream>
-#include<irrKlang/ik_ISoundEngine.h>
+
 using namespace std;
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
