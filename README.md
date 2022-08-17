@@ -21,3 +21,10 @@ Keybord control :
 > A - LEFT
 > 
 > D - RIGHT
+
+
+## Objectives
+Get the highest score  & have fun 😊
+
+![Start Menu](https://media.discordapp.net/attachments/921071146080821269/986950018873319474/Screenshot_2022-06-16_130557.jpg?width=974&height=701)
+
